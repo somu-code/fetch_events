@@ -1,6 +1,7 @@
 const fetchedDataArray = [];
 let bool = true;
-async function fetchEvents(url, utcDateString) {
+export async function fetchEvents(url, utcDateString) {
+  let finalObj = {};
   const date = new Date(utcDateString);
   const formattedDateTime = date.toLocaleString("en-US", {
     month: "short",
@@ -40,24 +41,17 @@ async function fetchEvents(url, utcDateString) {
     }
   }
 
-  console.log(fetchedDataArray.length);
-
   fetchedDataArray.forEach((item) => {
     if (item.formattedDate === dateTimeArray[0]) {
       if (item.formattedTime === dateTimeArray[1]) {
-        console.log(item);
+        finalObj = item;
       }
     }
   });
+  return finalObj;
 }
 
-const utcDate = "2024-11-11T14:00:00.000Z";
-
 // fetchEvents(
-//   "https://www.viagogo.com/Concert-Tickets/Rap-and-Hip-Hop-Music/Don-Toliver-Tickets?gridFilterType=0&homeAwayFilterType=0&sortBy=0&nearbyGridRadius=50&venueIdFilterType=0&eventViewType=0&opponentCategoryId=0&pageIndex=0&method=GetFilteredEvents&categoryId=272755&searchGuid=null&radiusFrom=80467&radiusTo=null&from=1970-01-01T00%3A00%3A00.000Z&to=9999-12-31T23%3A59%3A59.999Z&lat=22.57&lon=88.37&genreId=undefined&eventCountryType=0&fromPrice=undefined&toPrice=undefined",
-//   utcDate
+//   "https://www.viagogo.com/Concert-Tickets/International-Traditions/Diljit-Dosanjh-Tickets?gridFilterType=0&homeAwayFilterType=0&sortBy=0&nearbyGridRadius=50&venueIdFilterType=0&eventViewType=0&opponentCategoryId=0&pageIndex=0&method=GetFilteredEvents&categoryId=31617&searchGuid=null&radiusFrom=80467&radiusTo=null&from=1970-01-01T00%3A00%3A00.000Z&to=9999-12-31T23%3A59%3A59.999Z&lat=22.57&lon=88.37&genreId=undefined&eventCountryType=0&fromPrice=undefined&toPrice=undefined",
+//   "2024-11-17T13:30:00.000Z"
 // );
-fetchEvents(
-  "https://www.viagogo.com/Concert-Tickets/International-Traditions/Diljit-Dosanjh-Tickets?gridFilterType=0&homeAwayFilterType=0&sortBy=0&nearbyGridRadius=50&venueIdFilterType=0&eventViewType=0&opponentCategoryId=0&pageIndex=0&method=GetFilteredEvents&categoryId=31617&searchGuid=null&radiusFrom=80467&radiusTo=null&from=1970-01-01T00%3A00%3A00.000Z&to=9999-12-31T23%3A59%3A59.999Z&lat=22.57&lon=88.37&genreId=undefined&eventCountryType=0&fromPrice=undefined&toPrice=undefined",
-  "2024-11-17T13:30:00.000Z"
-);
