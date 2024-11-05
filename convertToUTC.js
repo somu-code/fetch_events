@@ -7,3 +7,5 @@ export function convertToUTC(dateTime) {
   const localDate = new Date(newDateTime);
   return new Date(localDate.toUTCString());
 }
+
+// console.log(convertToUTC("Nov 11, 7:30 PM"));

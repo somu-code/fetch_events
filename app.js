@@ -8,11 +8,22 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
 
+app.get("/ping", (_req, res) => {
+  try {
+    res.json({ message: "pong" });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 app.post("/fetch-events", async (req, res) => {
   const { urlString, isoDate } = req.body;
 
   if (!urlString || !isoDate) {
-    return res.status(400).json({ error: "urlString and isoDate are required" });
+    return res
+      .status(400)
+      .json({ error: "urlString and isoDate are required" });
   }
 
   try {
