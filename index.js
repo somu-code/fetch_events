@@ -1,53 +1,47 @@
-const fetchedDataArray = [];
-let bool = true;
-const finalArray = [];
 export async function fetchEvents(url, utcDateString) {
+  const fetchedDataArray = [];
+  const finalArray = [];
   const date = new Date(utcDateString);
-  const formattedDateTime = date.toLocaleString("en-US", {
+  const formattedDate = date.toLocaleString("en-US", {
     month: "short",
     day: "2-digit",
+  });
+  const formattedTime = date.toLocaleString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
-  const dateTimeArray = formattedDateTime.split(", ");
 
-  const urlArray = url.split("pageIndex=");
-  let pageIndexValue = Number(urlArray[1].split("")[0]);
-  while (bool) {
+  let pageIndexValue = new URL(url).searchParams.get("pageIndex") || 1;
+
+  while (true) {
     try {
-      const urlInSideLoop = url.split("pageIndex=");
-      const secondPart = urlInSideLoop[1].split("");
-      const one = secondPart.slice(1);
-      const two = one.join("");
-      const newUrlArray = [urlArray[0], `pageIndex=${pageIndexValue}`, two];
-      let newUrl = newUrlArray.join("");
-      const response = await fetch(newUrl, {
+      const currentUrl = new URL(url);
+      currentUrl.searchParams.set("pageIndex", pageIndexValue);
+
+      const response = await fetch(currentUrl.toString(), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const jsonData = await response.json();
-      if (!jsonData.items || jsonData.items.length == 0) {
-        bool = false;
-        break;
-      }
-      jsonData.items.map((item) => fetchedDataArray.push(item));
+      if (!jsonData.items || jsonData.items.length === 0) break;
+
+      jsonData.items.forEach((item) => fetchedDataArray.push(item));
       pageIndexValue++;
     } catch (error) {
       console.error("Fetch error", error);
-      bool = false;
+      break;
     }
   }
 
   fetchedDataArray.forEach((item) => {
-    if (item.formattedDate === dateTimeArray[0]) {
-      if (item.formattedTime === dateTimeArray[1]) {
-        finalArray.push(item);
-      }
+    if (item.formattedDate === formattedDate && item.formattedTime === formattedTime) {
+      finalArray.push(item);
     }
   });
+
   return finalArray;
 }
 
