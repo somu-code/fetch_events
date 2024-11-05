@@ -18,16 +18,16 @@ app.get("/ping", (_req, res) => {
 });
 
 app.post("/fetch-events", async (req, res) => {
-  const { urlString } = req.body;
+  const { urlString, dateString } = req.body;
 
-  if (!urlString) {
+  if (!urlString && dateString) {
     return res
       .status(400)
       .json({ error: "urlString and isoDate are required" });
   }
 
   try {
-    const funcRes = await fetchEvents(urlString);
+    const funcRes = await fetchEvents(urlString, dateString);
     res.json(funcRes);
   } catch (error) {
     console.error("Error fetching events:", error);

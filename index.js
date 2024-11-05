@@ -1,4 +1,4 @@
-export async function fetchEvents(url) {
+export async function fetchEvents(url, dateString) {
   const fetchedDataArray = [];
   const finalArray = [];
 
@@ -24,7 +24,12 @@ export async function fetchEvents(url) {
       console.error("Fetch error", error);
       break;
     }
+    fetchedDataArray.forEach(item => {
+      if (item.formattedDate === dateString) {
+        finalArray.push(item);
+      }
+    })
   }
 
-  return fetchedDataArray;
+  return finalArray;
 }
