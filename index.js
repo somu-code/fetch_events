@@ -1,6 +1,4 @@
-import { convertToUTC } from "./convertToUTC.js";
-
-export async function fetchEvents(url, utcDateString) {
+export async function fetchEvents(url) {
   const fetchedDataArray = [];
   const finalArray = [];
 
@@ -28,20 +26,5 @@ export async function fetchEvents(url, utcDateString) {
     }
   }
 
-  fetchedDataArray.forEach((item) => {
-    item.UTC = convertToUTC(
-      `${item.formattedDate}, ${item.formattedTime}`,
-      item.eventMetadata.common.venueTimeZoneOffset
-    );
-  });
-
-  fetchedDataArray.forEach((item) => {
-    const utcDateOne = new Date(item.UTC);
-    const utcDateTwo = new Date(utcDateString);
-    if (utcDateOne.getTime() == utcDateTwo.getTime()) {
-      finalArray.push(item);
-    }
-  });
-
-  return finalArray;
+  return fetchedDataArray;
 }
