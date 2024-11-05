@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config({
   override: true,
 });
-const PORT = process.env.port || 3000;
+const PORT = process.env.PORT;
 const app = express();
 app.use(express.json());
 
@@ -13,7 +13,6 @@ app.post("/fetch-events", async (req, res) => {
   try {
     const { urlString, isoDate } = await req.body;
     const funcRes = await fetchEvents(urlString, isoDate);
-    console.log(funcRes);
     res.json(funcRes);
   } catch (error) {
     console.error(error);
