@@ -1,16 +1,8 @@
+import { convertToUTC } from "./convertToUTC.js";
+
 export async function fetchEvents(url, utcDateString) {
   const fetchedDataArray = [];
   const finalArray = [];
-  const date = new Date(utcDateString);
-  const formattedDate = date.toLocaleString("en-US", {
-    month: "short",
-    day: "2-digit",
-  });
-  const formattedTime = date.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
 
   let pageIndexValue = new URL(url).searchParams.get("pageIndex") || 1;
 
@@ -37,15 +29,16 @@ export async function fetchEvents(url, utcDateString) {
   }
 
   fetchedDataArray.forEach((item) => {
-    if (item.formattedDate === formattedDate && item.formattedTime === formattedTime) {
+    item.UTC = convertToUTC(`${item.formattedDate}, ${item.formattedTime}`);
+  });
+
+  fetchedDataArray.forEach((item) => {
+    const utcDateOne = new Date(item.UTC);
+    const utcDateTwo = new Date(utcDateString);
+    if (utcDateOne.getTime() == utcDateTwo.getTime()) {
       finalArray.push(item);
     }
   });
 
   return finalArray;
 }
-
-// fetchEvents(
-//   "https://www.viagogo.com/Concert-Tickets/International-Traditions/Diljit-Dosanjh-Tickets?gridFilterType=0&homeAwayFilterType=0&sortBy=0&nearbyGridRadius=50&venueIdFilterType=0&eventViewType=0&opponentCategoryId=0&pageIndex=0&method=GetFilteredEvents&categoryId=31617&searchGuid=null&radiusFrom=80467&radiusTo=null&from=1970-01-01T00%3A00%3A00.000Z&to=9999-12-31T23%3A59%3A59.999Z&lat=22.57&lon=88.37&genreId=undefined&eventCountryType=0&fromPrice=undefined&toPrice=undefined",
-//   "2024-11-17T13:30:00.000Z"
-// );
