@@ -29,7 +29,10 @@ export async function fetchEvents(url, utcDateString) {
   }
 
   fetchedDataArray.forEach((item) => {
-    item.UTC = convertToUTC(`${item.formattedDate}, ${item.formattedTime}`);
+    item.UTC = convertToUTC(
+      `${item.formattedDate}, ${item.formattedTime}`,
+      item.eventMetadata.common.venueTimeZoneOffset
+    );
   });
 
   fetchedDataArray.forEach((item) => {
