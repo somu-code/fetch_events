@@ -1,7 +1,7 @@
 const fetchedDataArray = [];
 let bool = true;
+const finalArray = [];
 export async function fetchEvents(url, utcDateString) {
-  let finalObj = {};
   const date = new Date(utcDateString);
   const formattedDateTime = date.toLocaleString("en-US", {
     month: "short",
@@ -44,11 +44,11 @@ export async function fetchEvents(url, utcDateString) {
   fetchedDataArray.forEach((item) => {
     if (item.formattedDate === dateTimeArray[0]) {
       if (item.formattedTime === dateTimeArray[1]) {
-        finalObj = item;
+        finalArray.push(item);
       }
     }
   });
-  return finalObj;
+  return finalArray;
 }
 
 // fetchEvents(
