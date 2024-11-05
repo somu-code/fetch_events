@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.post("/fetch-events", async (req, res) => {
   try {
-    const { urlString, isoDate } = await req.body;
+    const { urlString, isoDate } = req.body;
     const funcRes = await fetchEvents(urlString, isoDate);
     res.json(funcRes);
   } catch (error) {
